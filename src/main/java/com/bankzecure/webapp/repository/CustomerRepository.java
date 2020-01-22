@@ -9,8 +9,8 @@ import com.bankzecure.webapp.entity.*;
 import com.bankzecure.webapp.JdbcUtils;
 
 public class CustomerRepository {
-  private final static String DB_URL = "jdbc:mysql://localhost:3306/spring_ultrabank?serverTimezone=GMT";
-	private final static String DB_USERNAME = "ultrabank";
+  private final static String DB_URL = "jdbc:mysql://localhost:3306/springboot_bankzecure?serverTimezone=GMT";
+	private final static String DB_USERNAME = "bankzecure";
 	private final static String DB_PASSWORD = "Ultr4B4nk@L0nd0n";
 
   public Customer findByIdentifierAndPassword(final String identifierParam, final String password) {
