@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <style th:fragment="styles">
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    a {
+      text-decoration: none;
+    }
+    .card-card {
+      border: 1px solid #eee;
+      padding: 2em;
+      margin-bottom: 1em;
+      width: 400px;
+    }
+    .card-card p {
+      display: flex;
+    }
+    .card-card p span:first-child {
+      flex-grow: 1;
+    }
+    .card-card .card-number {
+      font-weight: bold;
+    }
+    header {
+      background: #001064;
+      color: #ddd;
+      padding: 1.5em 0;
+    }
+    header a {
+      color: #ddd;
+      padding: 1em 0;
+    }
+    header a:hover {
+      color: #eee;
+    }
+    button {
+      background: #002240;
+      border-color: #002240;
+      color: #fff;
+    }
+    input, fieldset {
+      border: 1px solid #ddd;
+    }
+    button, input {
+      border-radius: 3px;
+      font-size: 1rem;
+      padding: 0.25em 0.5em;
+      margin-bottom: 0.5em;
+    }
+    fieldset {
+      padding: 2em;
+      width: 60%;
+    }
+    label, input {
+      display: block;
+      width: 80%;
+    }
+  </style>
+  <body>
+    <header th:fragment="top">
+      <nav class="container">
+        <a th:href="@{/}">BankZecure</a>
+      </nav>
+    </header>
+  </body>
+</html>

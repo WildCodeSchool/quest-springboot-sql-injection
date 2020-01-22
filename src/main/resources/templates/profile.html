@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>BankZecur - Your Cards</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <style th:replace="header.html :: styles">
+  </style>
+  <body>
+    <header th:replace="header.html :: top">
+      Your header here
+    </header>
+    <div class="container">
+      <div th:if="${customer != null}">
+        <h1 th:text="|Welcome, ${customer.fullName}|"></h1>
+
+        <h2>Profile summary</h2>
+
+        <ul>
+          <li th:text="|Identifier: ${customer.identifier}|"></li>
+          <li th:text="|First name: ${customer.firstName}|"></li>
+          <li th:text="|Last name: ${customer.lastName}|"></li>
+          <li th:text="|E-mail: ${customer.email}|"></li>
+          <li><a th:href="@{/customers/{identifier}/credit-cards/(identifier=${customer.identifier})}"><strong>Your credit cards</a></strong></li>
+        </ul>
+
+        <h2>Profile update</h2>
+
+        <form method="post" action="/customers/update" enctype="application/x-www-form-urlencoded">
+
+          <fieldset>
+
+            <input name="identifier" type="hidden" th:value="${customer.identifier}" />
+
+            <label for="email">E-mail</label>
+            <input name="email" id="email" type="email" placeholder="Enter your email" th:attr="value=${customer.email}" />
+
+            <label for="password">Password</label>
+            <input name="password" id="password" type="password" placeholder="Enter your password" />
+
+            <button type="submit">Update profile</button>
+
+          </fieldset>
+
+        </form>
+      </div>
+
+      <div th:if="${customer == null}">
+        Error: no profile
+      </div>
+    </div>
+  </body>
+</html>
