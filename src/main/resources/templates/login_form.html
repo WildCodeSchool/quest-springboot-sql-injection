@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>BankZecur - Your Cards</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <style th:replace="header.html :: styles">
+  </style>
+  <body>
+    <header th:replace="header.html :: top">
+      Your header here
+    </header>
+    <div class="container">
+      <h1>Welcome to BankZecure</h1>
+      <p>A bank you can trust!</p>
+
+      <h2>Sign in to your account</h2>
+
+      <form method="post" action="/login" enctype="application/x-www-form-urlencoded">
+
+        <fieldset>
+          <label for="identifier">Identifier</label>
+          <input name="identifier" id="identifier" type="text" placeholder="Enter your 6-digit identifier" />
+
+          <label for="password">Password</label>
+          <input name="password" id="password" type="password" placeholder="Enter your password" />
+
+          <button type="submit">Sign in</button>
+
+        </fieldset>
+
+      </form>
+    </div>
+  </body>
+</html>

@@ -46,6 +46,28 @@
     header a:hover {
       color: #eee;
     }
+    button {
+      background: #002240;
+      border-color: #002240;
+      color: #fff;
+    }
+    input, fieldset {
+      border: 1px solid #ddd;
+    }
+    button, input {
+      border-radius: 3px;
+      font-size: 1rem;
+      padding: 0.25em 0.5em;
+      margin-bottom: 0.5em;
+    }
+    fieldset {
+      padding: 2em;
+      width: 60%;
+    }
+    label, input {
+      display: block;
+      width: 80%;
+    }
   </style>
   <body>
     <header th:fragment="top">
