@@ -26,11 +26,11 @@
 
         <h2>Profile update</h2>
 
-        <form method="post" action="/update-profile" enctype="application/x-www-form-urlencoded">
+        <form method="post" action="/customers/update" enctype="application/x-www-form-urlencoded">
 
           <fieldset>
 
-            <input name="identifier" type="hidden" />
+            <input name="identifier" type="hidden" th:value="${customer.identifier}" />
 
             <label for="email">E-mail</label>
             <input name="email" id="email" type="email" placeholder="Enter your email" th:attr="value=${customer.email}" />
