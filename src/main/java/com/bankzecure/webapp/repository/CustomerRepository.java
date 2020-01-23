@@ -45,7 +45,7 @@ public class CustomerRepository {
     return null;
   }
 
-  public Customer update(String identifierParam, String emailParam, String password) {
+  public Customer update(String identifier, String newEmail, String newPassword) {
 
     Connection connection = null;
     Statement statement = null;
@@ -60,14 +60,13 @@ public class CustomerRepository {
 
         // Build the update query using a QueryBuilder
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("UPDATE customer SET email = '" + emailParam + "'");
-        // Don't set the password in the update, if it's not provided
-        if (password != "") {
-          queryBuilder.append(",password = '" + password + "'");
+        queryBuilder.append("UPDATE customer SET email = '" + newEmail + "'");
+        // Don't set the password in the update query, if it's not provided
+        if (newPassword != "") {
+          queryBuilder.append(",password = '" + newPassword + "'");
         }
-        queryBuilder.append(" WHERE identifier = '" + identifierParam + "'");
+        queryBuilder.append(" WHERE identifier = '" + identifier + "'");
         String query = queryBuilder.toString();
-        System.out.println(query);
         statement.executeUpdate(query);
 
         JdbcUtils.closeStatement(statement);
@@ -75,16 +74,16 @@ public class CustomerRepository {
 
         connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         statement = connection.createStatement();
-        query = "SELECT * FROM customer WHERE identifier = '" + identifierParam + "'";
+        query = "SELECT * FROM customer WHERE identifier = '" + identifier + "'";
         resultSet = statement.executeQuery(query);
 
         if (resultSet.next()) {
           final int id = resultSet.getInt("id");
-          final String identifier = resultSet.getString("identifier");
+          final String identifierInDb = resultSet.getString("identifier");
           final String firstName = resultSet.getString("first_name");
           final String lastName = resultSet.getString("last_name");
           final String email = resultSet.getString("email");
-          customer = new Customer(id, identifier, firstName, lastName, email);
+          customer = new Customer(id, identifierInDb, firstName, lastName, email);
         }
         return customer;
     } catch (SQLException e) {
