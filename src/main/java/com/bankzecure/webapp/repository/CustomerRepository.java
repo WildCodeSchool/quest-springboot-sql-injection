@@ -64,15 +64,6 @@ public class CustomerRepository {
         statement.execute();
         resultSet = statement.getResultSet();
 
-        JdbcUtils.closeStatement(statement);
-        JdbcUtils.closeConnection(connection);
-
-        connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-        statement = connection.prepareCall("{call getCustomerByIdentifier(?)}");
-        statement.setString(1, identifier);
-        statement.execute();
-        resultSet = statement.getResultSet();
-
         if (resultSet.next()) {
           final int id = resultSet.getInt("id");
           final String identifierInDb = resultSet.getString("identifier");

@@ -10,16 +10,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- This is the SAFE way to get a customer's credit cards.
-DELIMITER $$
-CREATE PROCEDURE unsafeGetCustomerCreditCards(
-  IN customerIdentifier VARCHAR(6)
-)
-BEGIN
-  SELECT cc.* FROM credit_card cc JOIN customer c ON cc.customer_id = c.id WHERE c.identifier = QUOTE(customerIdentifier);
-END$$
-DELIMITER ;
-
 -- This is an UNSAFE way to get a customer by identifier and password.
 -- It is vulnerable to SQL injection.
 -- e.g. CALL unsafeGetCustomerByIdentifierAndPassword('797825', "' OR 1=1; -- '");
@@ -33,7 +23,8 @@ BEGIN
 END$$
 DELIMITER ;
 
--- This is the UNSAFE way to update a customer's profile.
+-- UPDATE a customer's profile.
+-- This procedure allows us to group the UPDATE and the SELECT that follows.
 DELIMITER $$
 CREATE PROCEDURE updateCustomer(
   IN customerIdentifier VARCHAR(6),
@@ -48,15 +39,6 @@ BEGIN
   ELSE
     UPDATE customer SET email = email, password = password WHERE identifier = customerIdentifier;
   END IF;
-END$$
-DELIMITER ;
-
--- This is the SAFE way to get a customer.
-DELIMITER $$
-CREATE PROCEDURE getCustomerByIdentifier(
-  IN customerIdentifier VARCHAR(6)
-)
-BEGIN
   SELECT * FROM customer WHERE identifier = customerIdentifier;
 END$$
 DELIMITER ;
