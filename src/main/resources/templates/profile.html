@@ -14,6 +14,10 @@
       <div th:if="${customer != null}">
         <h1 th:text="|Welcome, ${customer.fullName}|"></h1>
 
+        <div class="notification notification-success" th:if="${updated}">
+          Profile updated!
+        </div>
+
         <h2>Profile summary</h2>
 
         <ul>
@@ -45,8 +49,8 @@
         </form>
       </div>
 
-      <div th:if="${customer == null}">
-        Error: no profile
+      <div class="notification notification-error" th:if="${customer == null}">
+        Error: account not found or incorrect password
       </div>
     </div>
   </body>

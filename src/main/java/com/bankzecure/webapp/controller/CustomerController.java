@@ -15,10 +15,12 @@ public class CustomerController {
   @PostMapping("/customers/update")
   String getAll(Model model, @RequestParam String identifier, @RequestParam String email, @RequestParam String password) {
     Customer customer = repository.update(identifier, email, password);
-    return "customer_cards";
+    model.addAttribute("customer", customer);
+    model.addAttribute("updated", true);
+    return "profile";
   }
 
-  @PostMapping("/login")
+  @PostMapping("/customers/authenticate")
   String login(Model model, @RequestParam String identifier, @RequestParam String password) {
     Customer customer = repository.findByIdentifierAndPassword(identifier, password);
     model.addAttribute("customer", customer);

@@ -17,7 +17,7 @@ public class WebappApplication {
 
   @GetMapping("/")
   String home() {
-    return "login_form";
+    return "signin_form";
   }
 
 }

@@ -6,16 +6,14 @@ public class CreditCard {
 
   private long id;
   private long customerId;
-  private String customerIdentifier;
   private String type;
   private String number;
   private String cvv;
   private String expiry;
 
-  public CreditCard(long id, long customerId, String customerIdentifier, String type, String number, String cvv, String expiry) {
+  public CreditCard(long id, long customerId, String type, String number, String cvv, String expiry) {
     this.id = id;
     this.customerId = customerId;
-    this.customerIdentifier = customerIdentifier;
     this.type = type;
     this.number = number;
     this.cvv = cvv;
@@ -28,10 +26,6 @@ public class CreditCard {
 
   public long getCustomerId() {
     return customerId;
-  }
-
-  public String getCustomerIdentifier() {
-    return customerIdentifier;
   }
 
   public String getType() {

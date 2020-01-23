@@ -14,7 +14,7 @@
       <h1>Your Cards</h1>
 
       <div th:each="creditCard : ${creditCards}">
-        <div class="card-card" th:attr="data-customer_identifier=${creditCard.customerIdentifier}">
+        <div class="card-card">
           <p>
             <span class="card-number" th:text="${creditCard.formattedNumber}"></span>
             <span th:text="${creditCard.type}"></span>

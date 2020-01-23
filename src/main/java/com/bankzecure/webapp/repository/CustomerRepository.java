@@ -13,26 +13,26 @@ public class CustomerRepository {
 	private final static String DB_USERNAME = "bankzecure";
 	private final static String DB_PASSWORD = "Ultr4B4nk@L0nd0n";
 
-  public Customer findByIdentifierAndPassword(final String identifierParam, final String password) {
+  public Customer findByIdentifierAndPassword(final String identifier, final String password) {
     Connection connection = null;
     Statement statement = null;
     ResultSet resultSet = null;
     try {
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
       statement = connection.createStatement();
-      final String query = "SELECT * FROM customer WHERE identifier = '" + identifierParam + "' AND password = '" + password + "'";
-      System.out.println(query);
+      final String query = "SELECT * FROM customer " +
+        "WHERE identifier = '" + identifier + "' AND password = '" + password + "'";
       resultSet = statement.executeQuery(query);
 
       Customer customer = null;
 
       if (resultSet.next()) {
         final int id = resultSet.getInt("id");
-        final String identifier = resultSet.getString("identifier");
+        final String identifierInDb = resultSet.getString("identifier");
         final String firstName = resultSet.getString("first_name");
         final String lastName = resultSet.getString("last_name");
         final String email = resultSet.getString("email");
-        customer = new Customer(id, identifier, firstName, lastName, email);
+        customer = new Customer(id, identifierInDb, firstName, lastName, email);
       }
       return customer;
     } catch (final SQLException e) {
