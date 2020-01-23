@@ -2,7 +2,7 @@
 -- However, since we can only pass 6 characters as the identifier,
 -- it doesn't leave much room for carrying out an SQL injection.
 DELIMITER $$
-CREATE PROCEDURE unsafeGetCustomerCreditCards(
+CREATE PROCEDURE getCustomerCreditCards(
   IN customerIdentifier VARCHAR(6)
 )
 BEGIN
@@ -24,7 +24,7 @@ DELIMITER ;
 -- It is vulnerable to SQL injection.
 -- e.g. CALL unsafeGetCustomerByIdentifierAndPassword('797825', "' OR 1=1; -- '");
 DELIMITER $$
-CREATE PROCEDURE unsafeGetCustomerByIdentifierAndPassword(
+CREATE PROCEDURE getCustomerByIdentifierAndPassword(
   IN customerIdentifier VARCHAR(6),
   IN customerPassword VARCHAR(64)
 )
@@ -33,20 +33,9 @@ BEGIN
 END$$
 DELIMITER ;
 
--- This is the SAFE way to get a customer.
-DELIMITER $$
-CREATE PROCEDURE safeGetCustomerByIdentifierAndPassword(
-  IN customerIdentifier VARCHAR(6),
-  IN customerPassword VARCHAR(64)
-)
-BEGIN
-  SELECT * FROM customer WHERE identifier = QUOTE(customerIdentifier) AND password = QUOTE(customerPassword);
-END$$
-DELIMITER ;
-
 -- This is the UNSAFE way to update a customer's profile.
 DELIMITER $$
-CREATE PROCEDURE unsafeUpdateCustomer(
+CREATE PROCEDURE updateCustomer(
   IN customerIdentifier VARCHAR(6),
   IN email VARCHAR(80),
   IN password VARCHAR(64)
@@ -59,5 +48,15 @@ BEGIN
   ELSE
     UPDATE customer SET email = email, password = password WHERE identifier = customerIdentifier;
   END IF;
+END$$
+DELIMITER ;
+
+-- This is the SAFE way to get a customer.
+DELIMITER $$
+CREATE PROCEDURE getCustomerByIdentifier(
+  IN customerIdentifier VARCHAR(6)
+)
+BEGIN
+  SELECT * FROM customer WHERE identifier = customerIdentifier;
 END$$
 DELIMITER ;

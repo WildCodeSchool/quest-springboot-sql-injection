@@ -2,27 +2,28 @@ package com.bankzecure.webapp.repository;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.bankzecure.webapp.entity.*;
 import com.bankzecure.webapp.JdbcUtils;
 
 public class CustomerRepository {
-  private final static String DB_URL = "jdbc:mysql://localhost:3306/springboot_bankzecure?serverTimezone=GMT";
+  private final static String DB_URL = "jdbc:mysql://localhost:3306/springboot_bankzecure?serverTimezone=GMT&noAccessToProcedureBodies=true";
 	private final static String DB_USERNAME = "bankzecure";
 	private final static String DB_PASSWORD = "Ultr4B4nk@L0nd0n";
 
   public Customer findByIdentifierAndPassword(final String identifier, final String password) {
     Connection connection = null;
-    Statement statement = null;
+    CallableStatement statement = null;
     ResultSet resultSet = null;
     try {
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-      statement = connection.createStatement();
-      final String query = "SELECT * FROM customer " +
-        "WHERE identifier = '" + identifier + "' AND password = '" + password + "'";
-      resultSet = statement.executeQuery(query);
+      statement = connection.prepareCall("{call getCustomerByIdentifierAndPassword(?,?)}");
+      statement.setString(1, identifier);
+      statement.setString(2, password);
+      statement.execute();
+      resultSet = statement.getResultSet();
 
       Customer customer = null;
 
@@ -45,10 +46,10 @@ public class CustomerRepository {
     return null;
   }
 
-  public Customer update(String identifierParam, String emailParam, String password) {
+  public Customer update(String identifier, String newEmail, String newPassword) {
 
     Connection connection = null;
-    Statement statement = null;
+    CallableStatement statement = null;
     ResultSet resultSet = null;
     Customer customer = null;
     try {
@@ -56,35 +57,29 @@ public class CustomerRepository {
         connection = DriverManager.getConnection(
           DB_URL, DB_USERNAME, DB_PASSWORD
         );
-        statement = connection.createStatement();
-
-        // Build the update query using a QueryBuilder
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("UPDATE customer SET email = '" + emailParam + "'");
-        // Don't set the password in the update, if it's not provided
-        if (password != "") {
-          queryBuilder.append(",password = '" + password + "'");
-        }
-        queryBuilder.append(" WHERE identifier = '" + identifierParam + "'");
-        String query = queryBuilder.toString();
-        System.out.println(query);
-        statement.executeUpdate(query);
+        statement = connection.prepareCall("{call updateCustomer(?,?,?)}");
+        statement.setString(1, identifier);
+        statement.setString(2, newEmail);
+        statement.setString(3, newPassword);
+        statement.execute();
+        resultSet = statement.getResultSet();
 
         JdbcUtils.closeStatement(statement);
         JdbcUtils.closeConnection(connection);
 
         connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-        statement = connection.createStatement();
-        query = "SELECT * FROM customer WHERE identifier = '" + identifierParam + "'";
-        resultSet = statement.executeQuery(query);
+        statement = connection.prepareCall("{call getCustomerByIdentifier(?)}");
+        statement.setString(1, identifier);
+        statement.execute();
+        resultSet = statement.getResultSet();
 
         if (resultSet.next()) {
           final int id = resultSet.getInt("id");
-          final String identifier = resultSet.getString("identifier");
+          final String identifierInDb = resultSet.getString("identifier");
           final String firstName = resultSet.getString("first_name");
           final String lastName = resultSet.getString("last_name");
           final String email = resultSet.getString("email");
-          customer = new Customer(id, identifier, firstName, lastName, email);
+          customer = new Customer(id, identifierInDb, firstName, lastName, email);
         }
         return customer;
     } catch (SQLException e) {
