@@ -72,19 +72,19 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
   }
 
-  @Test
-  void userMaliciousLoginNotOk() throws Exception {
-    MvcResult requestResult = this.mockMvc.perform(
-      post("/customers/authenticate")
-              .param("identifier", "' OR 1=1 -- ;")
-              .param("password", ""))
-      //.andDo(MockMvcResultHandlers.print())
-      .andExpect(status().isOk())
-      .andReturn();
+  // @Test
+  // void userMaliciousLoginNotOk() throws Exception {
+  //   MvcResult requestResult = this.mockMvc.perform(
+  //     post("/customers/authenticate")
+  //             .param("identifier", "' OR 1=1 -- ;")
+  //             .param("password", ""))
+  //     //.andDo(MockMvcResultHandlers.print())
+  //     .andExpect(status().isOk())
+  //     .andReturn();
 
-    String htmlBody = requestResult.getResponse().getContentAsString();
-    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
-  }
+  //   String htmlBody = requestResult.getResponse().getContentAsString();
+  //   assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  // }
 
   /*------------------------------------*
    |Profile update tests                |
@@ -118,18 +118,19 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("Profile updated!"));
   }
 
-  // @Test
-  // void userRegularUpdateNotOk() throws Exception {
-  //   MvcResult requestResult = this.mockMvc.perform(
-  //     post("/customers/authenticate")
-  //             .param("identifier", "404404")
-  //             .param("email", "user.not.found@nowhere.org"))
-  //     //.andDo(MockMvcResultHandlers.print())
-  //     .andExpect(status().isOk())
-  //     .andReturn();
+  @Test
+  void userRegularUpdateNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      post("/customers/authenticate")
+              .param("identifier", "404404")
+              .param("email", "user.not.found@nowhere.org")
+              .param("password", ""))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
 
-  //   String htmlBody = requestResult.getResponse().getContentAsString();
-  //   assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
-  // }
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  }
 
 }
