@@ -73,19 +73,19 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
   }
 
-  // @Test
-  // void userMaliciousLoginNotOk() throws Exception {
-  //   MvcResult requestResult = this.mockMvc.perform(
-  //     post("/customers/authenticate")
-  //             .param("identifier", "' OR 1=1 -- ;")
-  //             .param("password", ""))
-  //     //.andDo(MockMvcResultHandlers.print())
-  //     .andExpect(status().isOk())
-  //     .andReturn();
+  @Test
+  void userMaliciousLoginNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      post("/customers/authenticate")
+              .param("identifier", "' OR 1=1 -- ;")
+              .param("password", ""))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
 
-  //   String htmlBody = requestResult.getResponse().getContentAsString();
-  //   assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
-  // }
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  }
 
   /*------------------------------------*
    |Profile update tests                |
@@ -135,20 +135,20 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
   }
 
-  // @Test
-  // void userMaliciousUpdateNotOk() throws Exception {
-  //   MvcResult requestResult = this.mockMvc.perform(
-  //     post("/customers/update")
-  //             .param("identifier", "' OR ''='")
-  //             .param("email", "pwned@your.acnt")
-  //             .param("password", "a"))
-  //     //.andDo(MockMvcResultHandlers.print())
-  //     .andExpect(status().isOk())
-  //     .andReturn();
+  @Test
+  void userMaliciousUpdateNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      post("/customers/update")
+              .param("identifier", "' OR ''='")
+              .param("email", "pwned@your.acnt")
+              .param("password", "a"))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
 
-  //   String htmlBody = requestResult.getResponse().getContentAsString();
-  //   assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
-  // }
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  }
 
   /*------------------------------------*
    | Credit cards  tests                |
@@ -165,10 +165,27 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("2433 5984 1212 6035"));
     assertThat(htmlBody, containsString("330"));
   }
+
   @Test
   void userRegularGetCreditCardsNotOk() throws Exception {
     MvcResult requestResult = this.mockMvc.perform(
       get("/customers/404404/credit-cards"))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
+
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    String trimmedBody = htmlBody
+      .replace("  ", "")
+      .replace("\n", "");
+    assertThat(trimmedBody, containsString("<div class=\"container\"><h1>Your Cards</h1></div>"));
+    // assertThat(htmlBody, containsString("330"));
+  }
+
+  @Test
+  void userMaliciousGetCreditCardsNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      get("/customers/' OR ''='/credit-cards"))
       //.andDo(MockMvcResultHandlers.print())
       .andExpect(status().isOk())
       .andReturn();
