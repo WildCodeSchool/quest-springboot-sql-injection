@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import com.bankzecure.webapp.SqlInitializer;;
@@ -134,19 +135,50 @@ class CustomerIntegrationTest {
     assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
   }
 
+  // @Test
+  // void userMaliciousUpdateNotOk() throws Exception {
+  //   MvcResult requestResult = this.mockMvc.perform(
+  //     post("/customers/update")
+  //             .param("identifier", "' OR ''='")
+  //             .param("email", "pwned@your.acnt")
+  //             .param("password", "a"))
+  //     //.andDo(MockMvcResultHandlers.print())
+  //     .andExpect(status().isOk())
+  //     .andReturn();
+
+  //   String htmlBody = requestResult.getResponse().getContentAsString();
+  //   assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  // }
+
+  /*------------------------------------*
+   | Credit cards  tests                |
+   *------------------------------------*/
   @Test
-  void userMaliciousUpdateNotOk() throws Exception {
+  void userRegularGetCreditCardsOk() throws Exception {
     MvcResult requestResult = this.mockMvc.perform(
-      post("/customers/update")
-              .param("identifier", "' OR ''='")
-              .param("email", "pwned@your.acnt")
-              .param("password", "a"))
+      get("/customers/602134/credit-cards"))
       //.andDo(MockMvcResultHandlers.print())
       .andExpect(status().isOk())
       .andReturn();
 
     String htmlBody = requestResult.getResponse().getContentAsString();
-    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+    assertThat(htmlBody, containsString("2433 5984 1212 6035"));
+    assertThat(htmlBody, containsString("330"));
+  }
+  @Test
+  void userRegularGetCreditCardsNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      get("/customers/404404/credit-cards"))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
+
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    String trimmedBody = htmlBody
+      .replace("  ", "")
+      .replace("\n", "");
+    assertThat(trimmedBody, containsString("<div class=\"container\"><h1>YourCards</h1></div>"));
+    // assertThat(htmlBody, containsString("330"));
   }
 
 }
