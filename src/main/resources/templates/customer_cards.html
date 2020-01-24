@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>BankZecur - Your Cards</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-  </head>
-  <style th:replace="header.html :: styles">
-  </style>
-  <body>
-    <header th:replace="header.html :: top">
-      Your header here
-    </header>
-    <div class="container">
-      <h1>Your Cards</h1>
 
-      <div th:each="creditCard : ${creditCards}">
-        <div class="card-card">
-          <p>
-            <span class="card-number" th:text="${creditCard.formattedNumber}"></span>
-            <span th:text="${creditCard.type}"></span>
-          </p>
-          <p>
-            <span th:text="${creditCard.cvv}"></span>
-            <span th:text="${creditCard.expiry}"></span>
-          </p>
-        </li>
-      </ul>
+<head>
+  <title>BankZecur - Your Cards</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<style th:replace="header.html :: styles">
+</style>
+
+<body>
+  <header th:replace="header.html :: top">
+    Your header here
+  </header>
+  <div class="container">
+    <h1>Your Cards</h1>
+
+    <div th:each="creditCard : ${creditCards}">
+      <div class="card-card">
+        <p>
+          <span class="card-number" th:text="${creditCard.formattedNumber}"></span>
+          <span th:text="${creditCard.type}"></span>
+        </p>
+        <p>
+          <span th:text="${creditCard.cvv}"></span>
+          <span th:text="${creditCard.expiry}"></span>
+        </p>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
