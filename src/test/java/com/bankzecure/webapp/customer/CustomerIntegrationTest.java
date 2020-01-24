@@ -177,7 +177,7 @@ class CustomerIntegrationTest {
     String trimmedBody = htmlBody
       .replace("  ", "")
       .replace("\n", "");
-    assertThat(trimmedBody, containsString("<div class=\"container\"><h1>YourCards</h1></div>"));
+    assertThat(trimmedBody, containsString("<div class=\"container\"><h1>Your Cards</h1></div>"));
     // assertThat(htmlBody, containsString("330"));
   }
 
