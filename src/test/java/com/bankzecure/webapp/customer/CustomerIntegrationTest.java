@@ -103,6 +103,7 @@ class CustomerIntegrationTest {
     String htmlBody = requestResult.getResponse().getContentAsString();
     assertThat(htmlBody, containsString("Profile updated!"));
   }
+
   @Test
   void userRegularUpdateEmailOnlyOk() throws Exception {
     MvcResult requestResult = this.mockMvc.perform(
@@ -121,10 +122,25 @@ class CustomerIntegrationTest {
   @Test
   void userRegularUpdateNotOk() throws Exception {
     MvcResult requestResult = this.mockMvc.perform(
-      post("/customers/authenticate")
+      post("/customers/update")
               .param("identifier", "404404")
               .param("email", "user.not.found@nowhere.org")
               .param("password", ""))
+      //.andDo(MockMvcResultHandlers.print())
+      .andExpect(status().isOk())
+      .andReturn();
+
+    String htmlBody = requestResult.getResponse().getContentAsString();
+    assertThat(htmlBody, containsString("Error: account not found or incorrect password"));
+  }
+
+  @Test
+  void userMaliciousUpdateNotOk() throws Exception {
+    MvcResult requestResult = this.mockMvc.perform(
+      post("/customers/update")
+              .param("identifier", "' OR ''='")
+              .param("email", "pwned@your.acnt")
+              .param("password", "a"))
       //.andDo(MockMvcResultHandlers.print())
       .andExpect(status().isOk())
       .andReturn();
