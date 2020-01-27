@@ -12,7 +12,7 @@ public class CreditCardController {
   
   @GetMapping("/customers/{identifier}/credit-cards")
   String getAll(Model model, @PathVariable String identifier) {
-    model.addAttribute("creditCards", repository.findByCustomer(identifier));
+    model.addAttribute("creditCards", repository.findByCustomerIdentifier(identifier));
     return "customer_cards";
   }
 
