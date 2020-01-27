@@ -15,7 +15,7 @@ public class CreditCardRepository {
 	private final static String DB_USERNAME = "bankzecure";
 	private final static String DB_PASSWORD = "Ultr4B4nk@L0nd0n";
 
-  public List<CreditCard> findByCustomer(final String identifier) {
+  public List<CreditCard> findByCustomerIdentifier(final String identifier) {
     Connection connection = null;
     Statement statement = null;
     ResultSet resultSet = null;
